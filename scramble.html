@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Play Scramble Game</title>
+    <link href="https://fonts.googleapis.com/css2?family=Carter+One&display=swap" rel="stylesheet">
+    <link rel='stylesheet' href="style.css">
+    
+</head>
+<body>
+    <header>
+        <h1>Play guess words game</h1>
+    </header>
+    <section>
+        <div class="gameArea">
+            <h3 class="message"></h3>
+            <input type='text' class='hidden-text'/>
+            <button class="btn">Click to start</button>
+
+        </div>
+    </section>
+    
+
+    <script>
+        let  message = document.querySelector('.message');
+        let guess = document.querySelector('input');
+        let btn = document.querySelector('.btn');
+        let play = false;
+        let words = '';
+        let randomNumber = '';
+
+        let softwareWords = [ 'nosql', 'react', 'ios', 'c++', 'java', 'c#', 'css', 'html', 'javascript', 'python', 'php','swift', 'android', 'sql', ' node', 'mongodb', 'express']
+
+        let createNewWords = () =>{
+              let randomNumber =Math.floor(Math.random() * softwareWords.length);
+              //console.log(randomNum)
+
+              let newWords = softwareWords[randomNumber]
+              //console.log(newWords.split(''));
+              return newWords;
+        }
+
+        let scramblesWords = (arr) => {
+           for(let i = arr.length -1; i>=0; i--){
+               let temp = arr[i];
+               //console.log(temp);
+               let tempNum = Math.floor(Math.random() * (i+1));
+            //    console.log(i);
+            //    console.log(tempNum);
+               
+               arr[i] = arr[tempNum];
+               arr[tempNum] = temp;
+        }
+
+        return arr;
+        }
+        //// here when i click button then start game.
+
+        btn.addEventListener('click', function() {
+            if(!play){
+                play= true;
+                btn.innerHTML = 'Guess words';
+                guess.classList.toggle('hidden-text');
+                words = createNewWords();
+
+                randomNumber = scramblesWords(words.split('')).join('');
+
+                //console.log(randomNumber.join(''));
+                message.innerHTML = `Guess the Words,  ${randomNumber}`;
+            }else{
+                let tempNewWords = guess.value;
+                if(tempNewWords === words){
+                    //console.log('This is correct');
+                    play = false;
+                    message.innerHTML = `Awesome it is correct ${words}`;
+                    btn.innerHTML = 'Start Again';
+                    guess.classList.toggle('hidden-text');
+                    guess.value = '';
+                }else{
+                    console.log('This is incorrect');
+                    message.innerHTML = `Sorry it is incorrect try again ${randomNumber}`;
+                }
+            }
+        });
+
+
+
+
+    </script>
+</body>
+</html>
